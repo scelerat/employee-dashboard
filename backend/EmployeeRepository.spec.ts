@@ -5,10 +5,11 @@ import * as EmployeeRepository from './EmployeeRepository'
 
 describe('EmployeeRepository', () => {
   before(async () => {
+    // Create DB
     await db.schema.createTable('employee')
       .addColumn('id', 'serial', (cb) => cb.primaryKey())
       .addColumn('name', 'varchar(90)', (cb) => cb.notNull())
-      .addColumn('department', 'varchar(50)')
+      .addColumn('department_id', 'integer')
       .addColumn('position', 'varchar(50)', (cb) => cb.notNull())
       .addColumn('bio', 'text', (cb) => cb.notNull())
       .addColumn('active', 'boolean', (cb) => cb.notNull())
@@ -42,7 +43,7 @@ describe('EmployeeRepository', () => {
   it('should create an employee', async () => {
     await EmployeeRepository.createEmployee({
       name: 'Jennifer',
-      department: 'Aniston',
+      department_id: 321,
       position: 'Actor',
       bio: 'A successful actor',
       salary: 50000,
