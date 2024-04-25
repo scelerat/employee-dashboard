@@ -6,18 +6,7 @@ import * as EmployeeRepository from './EmployeeRepository'
 describe('EmployeeRepository', () => {
   before(async () => {
     // Create DB
-    await db.schema.createTable('employee')
-      .addColumn('id', 'serial', (cb) => cb.primaryKey())
-      .addColumn('name', 'varchar(90)', (cb) => cb.notNull())
-      .addColumn('department_id', 'integer')
-      .addColumn('position', 'varchar(50)', (cb) => cb.notNull())
-      .addColumn('bio', 'text', (cb) => cb.notNull())
-      .addColumn('active', 'boolean', (cb) => cb.notNull())
-      .addColumn('salary', 'integer', (cb) => cb.notNull())
-      .addColumn('created_at', 'timestamp', (cb) =>
-        cb.notNull().defaultTo(sql`now()`)
-      )
-      .execute()
+    // Run migrations before running tests
   })
 
   afterEach(async () => {

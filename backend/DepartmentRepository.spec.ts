@@ -6,13 +6,7 @@ import * as DepartmentRepository from './DepartmentRepository'
 describe('DepartmentRepository', () => {
   before(async () => {
     // Create DB
-    await db.schema.createTable('department')
-      .addColumn('id', 'serial', (cb) => cb.primaryKey())
-      .addColumn('name', 'varchar(90)', (cb) => cb.notNull())
-      .addColumn('created_at', 'timestamp', (cb) =>
-        cb.notNull().defaultTo(sql`now()`)
-      )
-      .execute()
+    // Run migrations before running tests
   })
 
   afterEach(async () => {
