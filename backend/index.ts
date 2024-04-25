@@ -1,11 +1,13 @@
 import express, { Request, Response } from 'express';
 import { Client } from 'pg';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173'];
 
 // PostgreSQL connection configuration
 const client = new Client({
@@ -21,11 +23,20 @@ client.connect();
 
 // Middleware
 app.use(express.json());
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}))
 
 // Routes
 app.get('/employees', async (req: Request, res: Response) => {
   try {
-    const result = await client.query('SELECT * FROM employees');
+    const result = await client.query('SELECT * FROM employee');
     res.json(result.rows);
   } catch (err) {
     console.error(err);
