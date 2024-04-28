@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Client } from 'pg';
+import { findEmployee } from './EmployeeRepository'
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -36,8 +37,20 @@ app.use(cors({
 // Routes
 app.get('/employees', async (req: Request, res: Response) => {
   try {
-    const result = await client.query('SELECT * FROM employee');
-    res.json(result.rows);
+
+    const query: {
+      active?: boolean
+      department_id?: number
+    } = {}
+    if (typeof req.query.active === 'string') {
+      query.active = !!req.query.active
+    }
+    if (typeof req.query.department_id === 'string') {
+      query.department_id = parseInt(req.query.department_id, 10);
+    }
+    console.log(query)
+    const result = await findEmployee(query);
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
