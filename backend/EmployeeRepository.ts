@@ -11,12 +11,12 @@ export async function findEmployeeById(id: number) {
 export async function findEmployee(criteria: Partial<Employee>) {
   let query = db.selectFrom('employee')
 
-  if (criteria.id) {
-    query = query.where('id', '=', criteria.id) // Kysely is immutable, you must re-assign!
+  if (criteria.department_id) {
+    query = query.where('department_id', '=', criteria.department_id) // Kysely is immutable, you must re-assign!
   }
 
-  if (criteria.name) {
-    query = query.where('name', '=', criteria.name)
+  if (criteria.active) {
+    query = query.where('active', '=', criteria.active)
   }
 
   return await query.selectAll().execute()
