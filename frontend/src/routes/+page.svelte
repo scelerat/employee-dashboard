@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+  import { Button } from "$lib/components/ui/button";
   import * as Table from "$lib/components/ui/table";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 
-import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+  import EditUserDialog from "$lib/components/EditUserDialog.svelte";
+
 	export let data: PageData;
 
   function formatCurrency(value) {
@@ -47,6 +50,7 @@ import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
       <Table.Head>Position</Table.Head>
       <Table.Head class="text-right">Salary</Table.Head>
       <Table.Head>Status</Table.Head>
+      <Table.Head></Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -57,6 +61,8 @@ import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
       <Table.Cell>{employee.position}</Table.Cell>
       <Table.Cell class="text-right">{formatCurrency(employee.salary)}</Table.Cell>
       <Table.Cell>{employee.active?'Active':'Inactive'}</Table.Cell>
+      <Table.Cell>
+        {#if employee}<EditUserDialog employee={employee} />{/if}</Table.Cell>
     </Table.Row>
 {/each}
   </Table.Body>
