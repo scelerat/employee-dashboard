@@ -20,6 +20,13 @@
     console.log('onClickDepartment')
     data = await fetchMore()
   }
+  function onDelete(employeeId) {
+    const idx = data.employees.findIndex(empl => empl.id === employeeId)
+    if (idx < 0) return;
+    data = {
+      employees: [...data.employees.slice(0, idx), ...data.employees.slice(idx+1)]
+    } 
+  }
 </script>
 
 <h1>Employee Dashboard</h1>
@@ -50,7 +57,7 @@
   </Table.Header>
   <Table.Body>
   {#each data.employees as employee}
-    <DashboardTableRow employee={employee} />
+    <DashboardTableRow employee={employee} {onDelete} />
   {/each}
     <Table.Row>
       <Table.Cell colspan=6>

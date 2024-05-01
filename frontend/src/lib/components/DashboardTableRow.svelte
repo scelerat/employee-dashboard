@@ -1,12 +1,19 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
   import EditUserDialog from "$lib/components/EditUserDialog.svelte";
+  import DeleteUserDialog from "$lib/components/DeleteUserDialog.svelte";
   import * as Table from "$lib/components/ui/table";
   import { formatCurrency } from "$lib/utils";
 
   export let employee;
-
+  export let onDelete;
   function handleEmployeeUpdate(updatedEmployee) {
     employee = updatedEmployee.detail;
+  }
+  function handleDeleteEmployee(event) {
+    if (onDelete) {
+      onDelete(employee.id)
+    }
   }
 </script>
 
@@ -21,5 +28,8 @@
       <EditUserDialog 
         employee={employee}
         on:updateEmployee={handleEmployeeUpdate}/>
-    {/if}</Table.Cell>
+      <DeleteUserDialog employee={employee} on:deleteEmployee={handleDeleteEmployee} />
+
+    {/if}
+  </Table.Cell>
 </Table.Row>
