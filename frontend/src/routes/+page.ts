@@ -13,7 +13,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
   const departments = await fetch('http://localhost:3001/departments')
 
   return {
-    employees: await employees.json(),
     departments: await departments.json(),
+    employees: await employees.json(),
   }
 }

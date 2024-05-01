@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { onMount} from 'svelte';
 	import type { PageData } from './$types';
   import EditUserDialog from "$lib/components/EditUserDialog.svelte";
   import DashboardTableRow from "$lib/components/DashboardTableRow.svelte";
+  import DepartmentDropDown from "$lib/components/DepartmentDropDown.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Table from "$lib/components/ui/table";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
@@ -9,6 +11,7 @@
 
 	export let data: PageData;
   let employees = data.employees;
+  let departments = data.departments;
   let departmentIdSelection = -1;
   let activeSelection = -1;
 
@@ -19,6 +22,14 @@
     const response = await fetch(`http://localhost:3001/employees?${queryString}`)
     employees = await response.json();
   }
+  async function fetchDepartments() {
+    const response = await fetch('http://localhost:3001/departments');
+    departments = await response.json();
+  }
+
+  onMount(async () => {
+    await fetchDepartments();
+  });
   async function handleClickDepartment(e) {
     departmentIdSelection = e.detail.currentTarget.dataset.departmentId;
     await fetchMoreEmployees()
@@ -45,21 +56,10 @@
     <Table.Row>
       <Table.Head class="w-[100px]">Name</Table.Head>
       <Table.Head>
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>Department</DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Group>
-              <DropdownMenu.Item
-                data-department-id={-1}
-                on:click={handleClickDepartment}>Any</DropdownMenu.Item>
-              {#each data.departments as department}
-              <DropdownMenu.Item
-                data-department-id={department.id}
-                on:click={handleClickDepartment}>{department.name}</DropdownMenu.Item>
-            {/each}
-            </DropdownMenu.Group>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
+        <DepartmentDropDown 
+          departments={data.departments}
+          handleClickDepartment={handleClickDepartment}
+          >Department</DepartmentDropDown>
       </Table.Head>
       <Table.Head>Position</Table.Head>
       <Table.Head class="text-right">Salary</Table.Head>
@@ -90,11 +90,11 @@
   </Table.Header>
   <Table.Body>
   {#each employees as employee}
-    <DashboardTableRow employee={employee} {onDelete} />
+    <DashboardTableRow employee={employee} departments={departments} {onDelete} />
   {/each}
     <Table.Row>
       <Table.Cell colspan=6>
-        <EditUserDialog triggerText='Add' on:updateEmployee={handleOnUpdateEmployee} />
+        <EditUserDialog triggerText='Add' departments={departments} on:updateEmployee={handleOnUpdateEmployee} />
       </Table.Cell>
     </Table.Row>
   </Table.Body>

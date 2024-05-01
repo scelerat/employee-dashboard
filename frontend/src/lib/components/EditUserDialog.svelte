@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount} from 'svelte';
   import {
     Button,
     buttonVariants
   } from "$lib/components/ui/button";
+  
   import { Checkbox } from "$lib/components/ui/checkbox";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { Textarea } from "$lib/components/ui/textarea";
+  import DepartmentDropDown from "$lib/components/DepartmentDropDown.svelte";
 
   export let id = null;
   export let bio = null;
@@ -19,6 +21,10 @@
   export let active = null;
   export let triggerText = 'Edit';
   export let created_at = null;
+  export let departments = [];
+  let selectedDepartmentName = (department_id && departments.length) ?
+    departments.find(d => d.id === department_id).name
+    : 'Choose Department'; 
   let dialogOpen = false;
   let titleText = id ?
       "Edit Employee" 
@@ -29,6 +35,11 @@
 
 	const dispatch = createEventDispatcher();
 
+  function handleClickDepartment(e) {
+    department_id = parseInt(e.detail.currentTarget.dataset.departmentId, 10);
+    if (department_id < 0) return;
+    selectedDepartmentName = departments.find(dept => dept.id === department_id).name;
+  }
   async function handleSubmit(e) {
     const formData = new FormData(e.target);
     const jsonData = {};
@@ -108,7 +119,17 @@
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="department" class="text-right">Department</Label>
-          <Input id="department" name="department_id" value={department_id} required={true} class="col-span-3" />
+          <input type="hidden" id="department" name="department_id" value={department_id} required={true} class="col-span-3" />
+          <div class="col-span-3">
+          <DepartmentDropDown 
+            checkedIndex={department_id}
+            bind:departments={departments}
+            handleClickDepartment={handleClickDepartment}
+            >
+      <div class="relative grid border-black border select-none items-center whitespace-nowrap rounded-lg py-1.5 px-3 font-sans text-xs font-bold uppercase ">
+      <span class="">{selectedDepartmentName}</span>
+    </div></DepartmentDropDown> 
+        </div>
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="position" class="text-right">Position</Label>
