@@ -75,4 +75,13 @@
   body {
     @apply bg-background text-foreground;
   }
-}
+}  
+@media (max-width: 600px) {
+    /* Adjust layout for smaller screens */
+    .table-container {
+      overflow-x: hidden; /* Disable horizontal scrolling */
+    }
+    .hide-on-small {
+      display: none; /* Hide less important columns on smaller screens */
+    }
+  }
