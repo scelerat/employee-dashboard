@@ -20,12 +20,10 @@
   function onDelete(employeeId) {
     const idx = data.employees.findIndex(empl => empl.id === employeeId)
     if (idx < 0) return;
-    employees = [...data.employees.slice(0, idx), ...data.employees.slice(idx+1)]
+    employees = [...employees.slice(0, idx), ...employees.slice(idx+1)]
   }
   function handleOnUpdateEmployee({ detail: newEmployee }) {
-    data = {
-      employees: [...data.employees, newEmployee]
-    }
+    employees = [...employees, newEmployee]
   }
 </script>
 
