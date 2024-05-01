@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+  import EditUserDialog from "$lib/components/EditUserDialog.svelte";
   import DashboardTableRow from "$lib/components/DashboardTableRow.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Table from "$lib/components/ui/table";
@@ -51,5 +52,10 @@
   {#each data.employees as employee}
     <DashboardTableRow employee={employee} />
   {/each}
+    <Table.Row>
+      <Table.Cell colspan=6>
+        <EditUserDialog triggerText='Add' />
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table.Root>

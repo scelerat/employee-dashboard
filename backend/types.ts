@@ -27,7 +27,15 @@ export interface EmployeeTable {
   active: boolean
   created_at: ColumnType<Date, string | undefined, never>
 }
-
+export interface EmployeeRequest {
+  id?: string
+  name: string
+  department_id: number
+  position: string
+  salary: string
+  bio: string
+  active: string
+}
 export type Employee = Selectable<EmployeeTable>
 export type NewEmployee = Insertable<EmployeeTable>
 export type EmployeeUpdate = Updateable<EmployeeTable>

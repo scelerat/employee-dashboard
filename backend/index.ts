@@ -1,6 +1,11 @@
 import express, { Request, Response } from 'express';
 import { Client } from 'pg';
-import { findEmployee } from './EmployeeRepository'
+import {
+  findEmployee,
+  updateEmployee,
+  createEmployee
+} from './EmployeeRepository'
+import { employeeRequestParamsToDb } from './utils';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -48,7 +53,6 @@ app.get('/employees', async (req: Request, res: Response) => {
     if (typeof req.query.department_id === 'string') {
       query.department_id = parseInt(req.query.department_id, 10);
     }
-    console.log(query)
     const result = await findEmployee(query);
     res.json(result);
   } catch (err) {
@@ -58,13 +62,11 @@ app.get('/employees', async (req: Request, res: Response) => {
 });
 
 app.post('/employees', async (req: Request, res: Response) => {
-  const { name, department, position, salary, bio, status } = req.body;
+  const updatedEmployee = employeeRequestParamsToDb(req.body);
   try {
-    const result = await client.query(
-      'INSERT INTO employees (name, department, position, salary, bio, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [name, department, position, salary, bio, status]
-    );
-    res.status(201).json(result.rows[0]);
+    // @ts-ignore
+    const result = await createEmployee(updatedEmployee)
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -89,17 +91,15 @@ app.get('/employees/:id', async (req: Request, res: Response) => {
 });
 
 app.put('/employees/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { name, department, position, salary, bio, status } = req.body;
+  const id = parseInt(req.params.id, 10);
+  const { name, department_id, position, salary, bio, active } = req.body;
   try {
-    const result = await client.query(
-      'UPDATE employees SET name = $1, department = $2, position = $3, salary = $4, bio = $5, status = $6 WHERE id = $7 RETURNING *',
-      [name, department, position, salary, bio, status, id]
-    );
-    if (result.rows.length === 0) {
+    const updatedEmployee = await updateEmployee(id, employeeRequestParamsToDb(req.body))
+    if (!updatedEmployee) {
       res.status(404).json({ error: 'Employee not found' });
     } else {
-      res.json(result.rows[0]);
+      // Succeeded; no content
+      res.json(updatedEmployee);
     }
   } catch (err) {
     console.error(err);

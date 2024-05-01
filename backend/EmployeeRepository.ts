@@ -23,7 +23,11 @@ export async function findEmployee(criteria: Partial<Employee>) {
 }
 
 export async function updateEmployee(id: number, updateWith: EmployeeUpdate) {
-  await db.updateTable('employee').set(updateWith).where('id', '=', id).execute()
+  return await db.updateTable('employee')
+    .set(updateWith)
+    .where('id', '=', id)
+    .returningAll()
+    .executeTakeFirst();
 }
 
 export async function createEmployee(employee: NewEmployee) {
