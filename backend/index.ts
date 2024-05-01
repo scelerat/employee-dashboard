@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { Client } from 'pg';
 import {
   findEmployee,
   updateEmployee,
@@ -15,18 +14,6 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS?.split(',') || ['http://localhost:5173'];
-
-// PostgreSQL connection configuration
-const client = new Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOSTNAME,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: 5432,
-});
-
-// Connect to PostgreSQL
-client.connect();
 
 // Middleware
 app.use(express.json());
@@ -68,23 +55,6 @@ app.post('/employees', async (req: Request, res: Response) => {
     // @ts-ignore
     const result = await createEmployee(updatedEmployee)
     res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.get('/employees/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const result = await client.query('SELECT * FROM employees WHERE id = $1', [
-      id,
-    ]);
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: 'Employee not found' });
-    } else {
-      res.json(result.rows[0]);
-    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
