@@ -1,18 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+  import DashboardTableRow from "$lib/components/DashboardTableRow.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Table from "$lib/components/ui/table";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-
-  import EditUserDialog from "$lib/components/EditUserDialog.svelte";
+  import { formatCurrency } from "$lib/utils";
 
 	export let data: PageData;
 
-  function formatCurrency(value) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-      value
-    )
-  }
   async function fetchMore() {
 
     const response = await fetch('http://localhost:3001/employees?department_id=1')
@@ -45,7 +40,6 @@
             </DropdownMenu.Group>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-          <button on:click={onClickDepartment}>Department</button>
       </Table.Head>
       <Table.Head>Position</Table.Head>
       <Table.Head class="text-right">Salary</Table.Head>
@@ -54,16 +48,8 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-{#each data.employees as employee}
-    <Table.Row>
-      <Table.Cell class="font-medium">{employee.name}</Table.Cell>
-      <Table.Cell>{employee.department_id}</Table.Cell>
-      <Table.Cell>{employee.position}</Table.Cell>
-      <Table.Cell class="text-right">{formatCurrency(employee.salary)}</Table.Cell>
-      <Table.Cell>{employee.active?'Active':'Inactive'}</Table.Cell>
-      <Table.Cell>
-        {#if employee}<EditUserDialog employee={employee} />{/if}</Table.Cell>
-    </Table.Row>
-{/each}
+  {#each data.employees as employee}
+    <DashboardTableRow employee={employee} />
+  {/each}
   </Table.Body>
 </Table.Root>
