@@ -1,6 +1,6 @@
 import type { PageLoad } from './$types'
 
-export const load: PageLoad = async ({ url }) => {
+export const load: PageLoad = async ({ fetch, url }) => {
   let department_id = url.searchParams.get('department_id')
   const queryParams: {
     department_id?: number
