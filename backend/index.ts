@@ -37,8 +37,9 @@ app.get('/employees', async (req: Request, res: Response) => {
       active?: boolean
       department_id?: number
     } = {}
+    console.log(req.query)
     if (typeof req.query.active === 'string') {
-      query.active = !!req.query.active
+      query.active = !!parseInt(req.query.active, 10)
     }
     if (typeof req.query.department_id === 'string') {
       query.department_id = parseInt(req.query.department_id, 10);

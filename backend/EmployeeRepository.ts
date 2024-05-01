@@ -15,7 +15,8 @@ export async function findEmployee(criteria: Partial<Employee>) {
     query = query.where('department_id', '=', criteria.department_id) // Kysely is immutable, you must re-assign!
   }
 
-  if (criteria.active) {
+  if (typeof criteria.active !== 'undefined') {
+
     query = query.where('active', '=', criteria.active)
   }
 
