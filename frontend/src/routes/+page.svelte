@@ -9,13 +9,23 @@
 
 	export let data: PageData;
   let employees = data.employees;
-  async function fetchMoreEmployees( departmentId ) {
-    const departmentQuery = departmentId > -1 ? `?department_id=${departmentId}`:'';
-    const response = await fetch(`http://localhost:3001/employees${departmentQuery}`)
+  let departmentIdSelection = -1;
+  let activeSelection = -1;
+
+  async function fetchMoreEmployees() {
+    const departmentQuery = departmentIdSelection > -1 ? `department_id=${departmentIdSelection}`:'';
+    const activeQuery = activeSelection > -1 ? `active=${activeSelection}`: '';
+    const queryString = [departmentQuery, activeQuery].filter(query => query.length > 0).join('&')
+    const response = await fetch(`http://localhost:3001/employees?${queryString}`)
     employees = await response.json();
   }
   async function handleClickDepartment(e) {
-    await fetchMoreEmployees(e.detail.currentTarget.dataset.departmentId)
+    departmentIdSelection = e.detail.currentTarget.dataset.departmentId;
+    await fetchMoreEmployees()
+  }
+  async function handleClickStatus(e) {
+    activeSelection = e.detail.currentTarget.dataset.active;
+    await fetchMoreEmployees()
   }
   function onDelete(employeeId) {
     const idx = data.employees.findIndex(empl => empl.id === employeeId)
@@ -53,7 +63,28 @@
       </Table.Head>
       <Table.Head>Position</Table.Head>
       <Table.Head class="text-right">Salary</Table.Head>
-      <Table.Head>Status</Table.Head>
+      <Table.Head>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>Status</DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Group>
+              <DropdownMenu.Item
+                data-active={-1}
+                on:click={handleClickStatus}
+                >All</DropdownMenu.Item>
+              <DropdownMenu.Item
+                data-active={1}
+                on:click={handleClickStatus}
+                >Active</DropdownMenu.Item>
+              <DropdownMenu.Item
+                data-active={0}
+                on:click={handleClickStatus}
+                >Inactive</DropdownMenu.Item>
+
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      </Table.Head>
       <Table.Head></Table.Head>
     </Table.Row>
   </Table.Header>
