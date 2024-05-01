@@ -61,9 +61,9 @@
           handleClickDepartment={handleClickDepartment}
           >Department</DepartmentDropDown>
       </Table.Head>
-      <Table.Head>Position</Table.Head>
-      <Table.Head class="text-right">Salary</Table.Head>
-      <Table.Head>
+      <Table.Head class="hide-on-small">Position</Table.Head>
+      <Table.Head class="text-right hide-on-small">Salary</Table.Head>
+      <Table.Head class="hide-on-small">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>Status</DropdownMenu.Trigger>
           <DropdownMenu.Content>

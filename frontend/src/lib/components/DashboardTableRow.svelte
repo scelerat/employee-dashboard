@@ -29,9 +29,9 @@
 <Table.Row>
   <Table.Cell class="font-medium">{employee.name}</Table.Cell>
   <Table.Cell>{departmentName(employee.department_id)}</Table.Cell>
-  <Table.Cell>{employee.position}</Table.Cell>
-  <Table.Cell class="text-right">{formatCurrency(employee.salary)}</Table.Cell>
-  <Table.Cell>{employee.active?'Active':'Inactive'}</Table.Cell>
+  <Table.Cell class="hide-on-small">{employee.position}</Table.Cell>
+  <Table.Cell class="text-right hide-on-small">{formatCurrency(employee.salary)}</Table.Cell>
+  <Table.Cell class="hide-on-small">{employee.active?'Active':'Inactive'}</Table.Cell>
   <Table.Cell>
     {#if employee}
       <EditUserDialog 
