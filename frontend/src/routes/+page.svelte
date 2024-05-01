@@ -27,6 +27,11 @@
       employees: [...data.employees.slice(0, idx), ...data.employees.slice(idx+1)]
     } 
   }
+  function handleOnUpdateEmployee({ detail: newEmployee }) {
+    data = {
+      employees: [...data.employees, newEmployee]
+    }
+  }
 </script>
 
 <h1>Employee Dashboard</h1>
@@ -61,7 +66,7 @@
   {/each}
     <Table.Row>
       <Table.Cell colspan=6>
-        <EditUserDialog triggerText='Add' />
+        <EditUserDialog triggerText='Add' on:updateEmployee={handleOnUpdateEmployee} />
       </Table.Cell>
     </Table.Row>
   </Table.Body>
