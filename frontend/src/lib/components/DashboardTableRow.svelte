@@ -26,7 +26,7 @@
   <Table.Cell>
     {#if employee}
       <EditUserDialog 
-        employee={employee}
+        {...employee}
         on:updateEmployee={handleEmployeeUpdate}/>
       <DeleteUserDialog employee={employee} on:deleteEmployee={handleDeleteEmployee} />
 

@@ -69,7 +69,7 @@
   {/each}
     <Table.Row>
       <Table.Cell colspan=6>
-        <EditUserDialog triggerText='Add' employee={{}} on:updateEmployee={handleOnUpdateEmployee} />
+        <EditUserDialog triggerText='Add' on:updateEmployee={handleOnUpdateEmployee} />
       </Table.Cell>
     </Table.Row>
   </Table.Body>

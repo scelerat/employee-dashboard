@@ -10,17 +10,23 @@
   import { Label } from "$lib/components/ui/label";
   import { Textarea } from "$lib/components/ui/textarea";
 
-  export let employee = {};
+  export let id = null;
+  export let bio = null;
+  export let department_id = null;
+  export let name = null;
+  export let position = null;
+  export let salary = null;
+  export let active = null;
   export let triggerText = 'Edit';
+  export let created_at = null;
   let dialogOpen = false;
-  let titleText = employee.id ?
+  let titleText = id ?
       "Edit Employee" 
     : "Add New Employee"
-  let description = employee.id ?
+  let description = id ?
       "Make changes to the employee here. Click save when you're done."
     : "Enter information for a new employee. Click save when you're done."
 
-  let statusChecked = employee.active?'Active':'Inactive';
 	const dispatch = createEventDispatcher();
 
   async function handleSubmit(e) {
@@ -45,7 +51,6 @@
           newValue = parseInt(value, 10);
           break;
         case 'status':
-          console.log([value, key])
           key = 'active';
           newValue = (value == 'Active');
           break;
@@ -54,6 +59,7 @@
       }
       jsonData[key] = newValue;
     });
+    if (!'active' in jsonData) jsonData['active'] = false;
 
     try {
       const response = await fetch(url, {
@@ -68,8 +74,8 @@
         throw new Error('Failed to submit form');
       }
 
-      employee = await response.json();
-      dispatch('updateEmployee', employee)
+      const jsonEmployee = await response.json();
+      dispatch('updateEmployee', jsonEmployee)
       dialogOpen = false;
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -91,26 +97,26 @@
     </Dialog.Header>
     <form on:submit={handleSubmit}>
 
-      {#if employee.id}
-      <input type="hidden" id="id" name="id" value={employee.id}>
+      {#if id}
+      <input type="hidden" id="id" name="id" value={id}>
       {/if}
 
       <div class="grid gap-4 py-4">
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="name" class="text-right">Name</Label>
-          <Input id="name" name="name" value={employee.name} required={true} placeholder="Full name" class="col-span-3" />
+          <Input id="name" name="name" value={name} required={true} placeholder="Full name" class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="department" class="text-right">Department</Label>
-          <Input id="department" name="department_id" value={employee.department_id} required={true} class="col-span-3" />
+          <Input id="department" name="department_id" value={department_id} required={true} class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="position" class="text-right">Position</Label>
-          <Input id="position" name="position" value={employee.position} required={true} placeholder="Title or position of the employee" class="col-span-3" />
+          <Input id="position" name="position" value={position} required={true} placeholder="Title or position of the employee" class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="salary" class="text-right">Salary</Label>
-          <Input id="salary" name="salary" value={employee.salary} required={true} placeholder="Enter whole numbers; no symbols" class="col-span-3" />
+          <Input id="salary" name="salary" value={salary} required={true} placeholder="Enter whole numbers; no symbols" class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label
@@ -123,14 +129,14 @@
             type="checkbox"
             id="status"
             name="status"
-            checked={employee?.active}
+            checked={active}
             value="Active"
             aria-labelledby="status-label"
           />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="bio" class="text-right">Bio</Label>
-          <Textarea id="bio" name="bio" value={employee.bio} required={true} placeholder="A paragraph or two about the employee" class="col-span-3" />
+          <Textarea id="bio" name="bio" value={bio} required={true} placeholder="A paragraph or two about the employee" class="col-span-3" />
         </div>
       </div>
       <Dialog.Footer>
