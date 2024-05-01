@@ -8,19 +8,14 @@
   import { formatCurrency } from "$lib/utils";
 
 	export let data: PageData;
-
-  async function fetchMoreEmployees({ department_id }) {
-
-    const response = await fetch('http://localhost:3001/employees?department_id=1')
-    return {
-      employees: await response.json()
-    }
+  let employees = data.employees;
+  async function fetchMoreEmployees( departmentId ) {
+    const departmentQuery = departmentId > -1 ? `?department_id=${departmentId}`:'';
+    const response = await fetch(`http://localhost:3001/employees${departmentQuery}`)
+    employees = await response.json();
   }
   async function handleClickDepartment(e) {
-    data = {
-      departments: data.departments,
-      employees: await fetchMoreEmployees({ department_id : 1})
-    }
+    await fetchMoreEmployees(e.detail.currentTarget.dataset.departmentId)
   }
   function onDelete(employeeId) {
     const idx = data.employees.findIndex(empl => empl.id === employeeId)
@@ -48,10 +43,13 @@
           <DropdownMenu.Trigger>Department</DropdownMenu.Trigger>
           <DropdownMenu.Content>
             <DropdownMenu.Group>
+              <DropdownMenu.Item
+                data-department-id={-1}
+                on:click={handleClickDepartment}>Any</DropdownMenu.Item>
               {#each data.departments as department}
               <DropdownMenu.Item
                 data-department-id={department.id}
-                on:click={handleClickDepartment}>{department.name} {department.id}</DropdownMenu.Item>
+                on:click={handleClickDepartment}>{department.name}</DropdownMenu.Item>
             {/each}
             </DropdownMenu.Group>
           </DropdownMenu.Content>
@@ -64,7 +62,7 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-  {#each data.employees as employee}
+  {#each employees as employee}
     <DashboardTableRow employee={employee} {onDelete} />
   {/each}
     <Table.Row>
