@@ -8,7 +8,6 @@ import {
 import {
   findDepartment
 } from './DepartmentRepository';
-import { employeeRequestParamsToDb } from './utils';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
@@ -53,7 +52,7 @@ app.get('/employees', async (req: Request, res: Response) => {
 });
 
 app.post('/employees', async (req: Request, res: Response) => {
-  const updatedEmployee = employeeRequestParamsToDb(req.body);
+  const updatedEmployee = req.body;
   try {
     // @ts-ignore
     const result = await createEmployee(updatedEmployee)
@@ -68,7 +67,8 @@ app.put('/employees/:id', async (req: Request, res: Response) => {
   const id = parseInt(req.params.id, 10);
   const { name, department_id, position, salary, bio, active } = req.body;
   try {
-    const updatedEmployee = await updateEmployee(id, employeeRequestParamsToDb(req.body))
+    console.log(req.body)
+    const updatedEmployee = await updateEmployee(id, req.body)
     if (!updatedEmployee) {
       res.status(404).json({ error: 'Employee not found' });
     } else {

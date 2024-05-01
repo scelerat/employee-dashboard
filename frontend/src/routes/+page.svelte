@@ -9,16 +9,18 @@
 
 	export let data: PageData;
 
-  async function fetchMore() {
+  async function fetchMoreEmployees({ department_id }) {
 
     const response = await fetch('http://localhost:3001/employees?department_id=1')
     return {
       employees: await response.json()
     }
   }
-  async function onClickDepartment() {
-    console.log('onClickDepartment')
-    data = await fetchMore()
+  async function handleClickDepartment(e) {
+    data = {
+      departments: data.departments,
+      employees: await fetchMoreEmployees({ department_id : 1})
+    }
   }
   function onDelete(employeeId) {
     const idx = data.employees.findIndex(empl => empl.id === employeeId)
@@ -46,10 +48,11 @@
           <DropdownMenu.Trigger>Department</DropdownMenu.Trigger>
           <DropdownMenu.Content>
             <DropdownMenu.Group>
-              <DropdownMenu.Item>Profile</DropdownMenu.Item>
-              <DropdownMenu.Item>Billing</DropdownMenu.Item>
-              <DropdownMenu.Item>Team</DropdownMenu.Item>
-              <DropdownMenu.Item>Subscription</DropdownMenu.Item>
+              {#each data.departments as department}
+              <DropdownMenu.Item
+                data-department-id={department.id}
+                on:click={handleClickDepartment}>{department.name} {department.id}</DropdownMenu.Item>
+            {/each}
             </DropdownMenu.Group>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
@@ -66,7 +69,7 @@
   {/each}
     <Table.Row>
       <Table.Cell colspan=6>
-        <EditUserDialog triggerText='Add' on:updateEmployee={handleOnUpdateEmployee} />
+        <EditUserDialog triggerText='Add' employee={{}} on:updateEmployee={handleOnUpdateEmployee} />
       </Table.Cell>
     </Table.Row>
   </Table.Body>

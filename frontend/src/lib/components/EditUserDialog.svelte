@@ -4,6 +4,7 @@
     Button,
     buttonVariants
   } from "$lib/components/ui/button";
+  import { Checkbox } from "$lib/components/ui/checkbox";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
@@ -19,6 +20,7 @@
       "Make changes to the employee here. Click save when you're done."
     : "Enter information for a new employee. Click save when you're done."
 
+  let statusChecked = employee.active?'Active':'Inactive';
 	const dispatch = createEventDispatcher();
 
   async function handleSubmit(e) {
@@ -35,14 +37,22 @@
     e.preventDefault()
 
     formData.forEach((value, key) => {
+      let newValue;
       switch (key) {
         case 'id': return;
-        case 'status':
-          key = 'active';
-          value = value === 'Active' ? true : false;
+        case 'department_id':
+        case 'salary':
+          newValue = parseInt(value, 10);
           break;
+        case 'status':
+          console.log([value, key])
+          key = 'active';
+          newValue = (value == 'Active');
+          break;
+        default:
+          newValue = value;
       }
-      jsonData[key] = value;
+      jsonData[key] = newValue;
     });
 
     try {
@@ -103,8 +113,20 @@
           <Input id="salary" name="salary" value={employee.salary} required={true} placeholder="Enter whole numbers; no symbols" class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="status" class="text-right">Status</Label>
-          <Input id="status" name="status" value={employee.active?'Active':'Inactive'} required={true} class="col-span-3" />
+          <Label
+            id="status-label"
+            for="status"
+            class="text-sm text-right font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >Active</Label>
+          <input 
+            class={"peer box-content h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[disabled=true]:cursor-not-allowed data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[disabled=true]:opacity-50"}
+            type="checkbox"
+            id="status"
+            name="status"
+            checked={employee?.active}
+            value="Active"
+            aria-labelledby="status-label"
+          />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="bio" class="text-right">Bio</Label>
