@@ -4,7 +4,10 @@ import {
   updateEmployee,
   createEmployee,
   deleteEmployee
-} from './EmployeeRepository'
+} from './EmployeeRepository';
+import {
+  findDepartment
+} from './DepartmentRepository';
 import { employeeRequestParamsToDb } from './utils';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -92,6 +95,16 @@ app.delete('/employees/:id', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.get('/departments', async (req: Request, res: Response) => {
+  try {
+    const result = await findDepartment({});
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
 
 // Start server
 app.listen(port, () => {
