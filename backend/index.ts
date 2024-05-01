@@ -37,7 +37,6 @@ app.get('/employees', async (req: Request, res: Response) => {
       active?: boolean
       department_id?: number
     } = {}
-    console.log(req.query)
     if (typeof req.query.active === 'string') {
       query.active = !!parseInt(req.query.active, 10)
     }
@@ -68,7 +67,6 @@ app.put('/employees/:id', async (req: Request, res: Response) => {
   const id = parseInt(req.params.id, 10);
   const { name, department_id, position, salary, bio, active } = req.body;
   try {
-    console.log(req.body)
     const updatedEmployee = await updateEmployee(id, req.body)
     if (!updatedEmployee) {
       res.status(404).json({ error: 'Employee not found' });
