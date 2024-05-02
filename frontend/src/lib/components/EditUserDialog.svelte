@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount} from 'svelte';
+  import { z } from "zod";
   import {
     Button,
     buttonVariants
@@ -19,9 +20,32 @@
   export let position = null;
   export let salary = null;
   export let active = null;
-  export let triggerText = 'Edit';
   export let created_at = null;
   export let departments = [];
+  
+  let formErrors = [];
+
+  const employeeSchema = z.object({
+    bio: z.string().min(3, { message: "Bio must be 3 or more characters long"}),
+    department_id: z.number(),
+    name: z.string().min(2, { message: "Name must be 2 or more characters long"}),
+    position: z.string().min(3, { message: "Position must be 3 or more characters long"}),
+    salary: z.number({ message: "Salary must be a number"}),
+  });
+
+  function getError(name) {
+    let errorText = ''
+    console.log(formErrors)
+    console.log(typeof formErrors)
+    const issue = formErrors.find(issue => issue.path.indexOf(name) > -1);
+
+    if (issue) {
+      errorText = issue.message;
+    }
+    console.log(errorText)
+    return errorText
+  }
+
   let selectedDepartmentName = (department_id && departments.length) ?
     departments.find(d => d.id === department_id).name
     : 'Choose Department'; 
@@ -70,8 +94,15 @@
       }
       jsonData[key] = newValue;
     });
-    if (!'active' in jsonData) jsonData['active'] = false;
+    if (!('active' in jsonData)) jsonData['active'] = false;
 
+
+    const validation = employeeSchema.safeParse(jsonData);
+
+    if (!validation.success) {
+      formErrors = validation.error.issues;
+      return;
+    }
     try {
       const response = await fetch(url, {
         method: method,
@@ -116,6 +147,7 @@
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="name" class="text-right">Name</Label>
           <Input id="name" name="name" value={name} required={true} placeholder="Full name" class="col-span-3" />
+          <div class="validation-errors col-start-2 col-span-3 text-sm text-rose-500">{formErrors?getError('name'):''}</div>
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="department" class="text-right">Department</Label>
@@ -126,18 +158,21 @@
             bind:departments={departments}
             handleClickDepartment={handleClickDepartment}
             >
-      <div class="relative grid border-black border select-none items-center whitespace-nowrap rounded-lg py-1.5 px-3 font-sans text-xs font-bold uppercase ">
-      <span class="">{selectedDepartmentName}</span>
-    </div></DepartmentDropDown> 
+            <div class="relative grid border-black border select-none items-center whitespace-nowrap rounded-lg py-1.5 px-3 font-sans text-xs font-bold uppercase ">
+              <span class="">{selectedDepartmentName}</span>
+            </div>
+          </DepartmentDropDown> 
         </div>
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="position" class="text-right">Position</Label>
           <Input id="position" name="position" value={position} required={true} placeholder="Title or position of the employee" class="col-span-3" />
+          <div class="validation-errors col-start-2 col-span-3 text-sm text-rose-500">{formErrors?getError('position'):''}</div>
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="salary" class="text-right">Salary</Label>
           <Input id="salary" name="salary" value={salary} required={true} placeholder="Enter whole numbers; no symbols" class="col-span-3" />
+          <div class="validation-errors col-start-2 col-span-3 text-sm text-rose-500">{formErrors?getError('salary'):''}</div>
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label
@@ -158,6 +193,7 @@
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="bio" class="text-right">Bio</Label>
           <Textarea id="bio" name="bio" value={bio} required={true} placeholder="A paragraph or two about the employee" class="col-span-3" />
+          <div class="validation-errors col-start-2 col-span-3 text-sm text-rose-500">{formErrors?getError('bio'):''}</div>
         </div>
       </div>
       <Dialog.Footer>
