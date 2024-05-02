@@ -12,7 +12,7 @@ edit, update, add, and delete employees. Two of the components are reused,
 component library/builder as a basis for many ui pieces. Unlike many other ui
 component libraries, shadcn will create the component code for you, enabling
 more flexibility to modify core components, rather than simply being a node 
-module. You can see the shadcn-generated components in the `frontend/src/lib/ui` 
+module. You can see the shadcn-generated components in the [`frontend/src/lib/components/ui`](frontend/src/lib/components/ui) 
 directory. It turns out I didn't do any customization of these core modules. 
 shadcn also relies on TailwindCSS and your will see its use throughout the 
 components and layouts.
@@ -20,7 +20,7 @@ components and layouts.
 A very half-hearted attempt was made at validations using the [zod validation
 library](https://zod.dev/). There are some nifty integrations possible with 
 zod and shadcn, but I ended up just rolling my own-one off solution for
-highlighting form errors in [EditUserDialog.svelte](frontend/src/lib/components/EditUserDialog.svelte). Mostly a time issue.
+highlighting form errors in [EditUserDialog.svelte](frontend/src/lib/components/EditUserDialog.svelte#L29-L35). Mostly a time issue.
 
 This was my first time working with svelte, and a probably burned more time 
 than I should have learning the ins and outs of its reactivity paradigm.
