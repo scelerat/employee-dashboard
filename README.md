@@ -8,7 +8,7 @@ David Kurtz * david@scelerat.com
 The frontend is a [svelte/sveltekit](https://svelte.dev/) app. There is one 
 page in the app which displays and employee dashboard and the ability to 
 edit, update, add, and delete employees. Two of the components are reused,
-[DepartmentDialog.svelte](frontend/src/lib/components/DepartmentDialog.svelte) and [EditUserDialog.svelte](frontend/src/lib/components/EditUserDialog.svelte). I used the [shadcn-svelte](https://www.shadcn-svelte.com/)
+[DepartmentDropDown.svelte](frontend/src/lib/components/DepartmentDropDown.svelte) and [EditUserDialog.svelte](frontend/src/lib/components/EditUserDialog.svelte). I used the [shadcn-svelte](https://www.shadcn-svelte.com/)
 component library/builder as a basis for many ui pieces. Unlike many other ui
 component libraries, shadcn will create the component code for you, enabling
 more flexibility to modify core components, rather than simply being a node 
