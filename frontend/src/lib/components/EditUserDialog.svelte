@@ -100,7 +100,7 @@
     class={buttonVariants({ 
       size: "sm",
       variant: "outline" })
-    }>{triggerText}</Dialog.Trigger>
+    }><slot /></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
       <Dialog.Title>{titleText}</Dialog.Title>

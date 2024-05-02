@@ -47,7 +47,7 @@
     class={buttonVariants({ 
       size: "sm",
       variant: "outline" })
-    }>Delete</Dialog.Trigger>
+    }><img src="/delete-svgrepo-com.svg" width="16" height="16" alt="Delete" /></Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
       <Dialog.Title>Delete Employee</Dialog.Title>

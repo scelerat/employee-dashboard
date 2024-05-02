@@ -37,7 +37,9 @@
       <EditUserDialog 
         {...employee}
         departments={departments}
-        on:updateEmployee={handleEmployeeUpdate}/>
+        on:updateEmployee={handleEmployeeUpdate}>
+        <img src="/edit-3-svgrepo-com.svg" height=16 width=16 alt="Edit" />
+      </EditUserDialog>
       <DeleteUserDialog employee={employee} on:deleteEmployee={handleDeleteEmployee} />
 
     {/if}

@@ -94,7 +94,9 @@
   {/each}
     <Table.Row>
       <Table.Cell colspan=6>
-        <EditUserDialog triggerText='Add' departments={departments} on:updateEmployee={handleOnUpdateEmployee} />
+        <EditUserDialog departments={departments} on:updateEmployee={handleOnUpdateEmployee}>
+          <img src="/add-to-queue-svgrepo-com.svg" height=16 width=16 alt="Add" />
+        </EditUserDialog>
       </Table.Cell>
     </Table.Row>
   </Table.Body>
