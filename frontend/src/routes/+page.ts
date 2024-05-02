@@ -1,4 +1,5 @@
 import type { PageLoad } from './$types'
+import { PUBLIC_API_PORT } from '$env/static/public';
 
 export const load: PageLoad = async ({ fetch, url }) => {
   let department_id = url.searchParams.get('department_id')
@@ -9,8 +10,8 @@ export const load: PageLoad = async ({ fetch, url }) => {
     queryParams.department_id = department_id
   }
 
-  const employees = await fetch('http://localhost:3001/employees')
-  const departments = await fetch('http://localhost:3001/departments')
+  const employees = await fetch(`http://localhost:${PUBLIC_API_PORT}/employees`)
+  const departments = await fetch(`http://localhost:${PUBLIC_API_PORT}/departments`)
 
   return {
     departments: await departments.json(),

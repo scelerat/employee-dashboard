@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PUBLIC_API_PORT } from '$env/static/public';
 	import { createEventDispatcher, onMount} from 'svelte';
   import { z } from "zod";
   import {
@@ -35,14 +36,11 @@
 
   function getError(name) {
     let errorText = ''
-    console.log(formErrors)
-    console.log(typeof formErrors)
     const issue = formErrors.find(issue => issue.path.indexOf(name) > -1);
 
     if (issue) {
       errorText = issue.message;
     }
-    console.log(errorText)
     return errorText
   }
 
@@ -68,10 +66,10 @@
     const formData = new FormData(e.target);
     const jsonData = {};
     const id = formData.get('id');
-    let  url = `http://localhost:3001/employees`;
+    let  url = `http://localhost:${PUBLIC_API_PORT}/employees`;
     let  method = 'POST';
     if (id) {
-      url = `http://localhost:3001/employees/${id}`;
+      url = `http://localhost:${PUBLIC_API_PORT}/employees/${id}`;
       method = 'PUT';
     }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PUBLIC_API_PORT } from '$env/static/public';
 	import { onMount} from 'svelte';
 	import type { PageData } from './$types';
   import EditUserDialog from "$lib/components/EditUserDialog.svelte";
@@ -19,11 +20,11 @@
     const departmentQuery = departmentIdSelection > -1 ? `department_id=${departmentIdSelection}`:'';
     const activeQuery = activeSelection > -1 ? `active=${activeSelection}`: '';
     const queryString = [departmentQuery, activeQuery].filter(query => query.length > 0).join('&')
-    const response = await fetch(`http://localhost:3001/employees?${queryString}`)
+    const response = await fetch(`http://localhost:${ PUBLIC_API_PORT }/employees?${queryString}`)
     employees = await response.json();
   }
   async function fetchDepartments() {
-    const response = await fetch('http://localhost:3001/departments');
+    const response = await fetch(`http://localhost:${ PUBLIC_API_PORT }/departments`);
     departments = await response.json();
   }
 
