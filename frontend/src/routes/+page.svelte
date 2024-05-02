@@ -47,8 +47,9 @@
     employees = [...employees, newEmployee]
   }
 </script>
-
-<h1>Employee Dashboard</h1>
+<header>
+<h1 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Employee Dashboard</h1>
+</header>
 
 <Table.Root>
   <Table.Caption>Employees</Table.Caption>
