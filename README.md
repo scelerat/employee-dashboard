@@ -130,7 +130,11 @@ There are two drop down menus which select a subset of the data, department and 
 
 ![Department drop down menu](screenshots/main-table-department-dropdown.png)
 
+##### Department Drop-down with filter applied
+
 ![Department drop down menu with filter applied](screenshots/main-table-department-filter.png)
+
+##### Both Department and Status filter applied
 
 ![Status drop down menu with both department and status applied](screenshots/main-table-status-filter.png)
 
@@ -152,7 +156,7 @@ The department dropdown menu re-uses the same code used in the main table view a
 
 ![Edit dialog](screenshots/edit-view-dropdown.png)
 
-#### Edit Vorm validation
+#### Edit Form validation
 
 When unacceptable entries are attempted to be submitted, all errors are highlighted in the dialog and nothing is sent to the backend. 
 
