@@ -158,3 +158,10 @@ When unacceptable entries are attempted to be submitted, all errors are highligh
 
 
 ![Edit dialog validation](screenshots/edit-view-form-validation.png)
+
+### Delete Dialog
+
+When the delete icon is clicked, a dialog box opens prompting the user to confirm the action. The item is only deleted if the big red "Delete" button is clicked.
+
+
+![Delete dialog](screenshots/delete-dialog.png)
