@@ -103,3 +103,58 @@ Set `PUBLIC_API_PORT` to the same value as you did for `PORT` in backend/.env
 
     npm run dev
 
+
+## Screenshots
+
+
+### Main Table
+
+The main table view shows all the information about an employee except for their bio. On narrow screens, several columns are hidden by CSS (but still sent by the server/pesent in the DOM)
+
+#### Full-width
+![Main Table view](screenshots/main-table.png)
+
+#### Narrow viewport
+
+![Main Table view (narrow)](screenshots/main-table-narrow.png)
+
+#### Drop-down menus
+
+There are two drop down menus which select a subset of the data, department and status. These filters are additive, so if you choose to filter on one, and then the other, they will both be in effect at the same time.
+
+##### Status drop down menu
+
+![Status drop down menu](screenshots/main-table-status-dropdown.png)
+
+##### Department Drop-down and filter
+
+![Department drop down menu](screenshots/main-table-department-dropdown.png)
+
+![Department drop down menu with filter applied](screenshots/main-table-department-filter.png)
+
+![Status drop down menu with both department and status applied](screenshots/main-table-status-filter.png)
+
+### Edit/Add Dialog
+
+The Add and Edit dialogs share the same component code.
+
+#### Add dialog
+
+![Add dialog](screenshots/add-new-dialog.png)
+
+#### Edit dialog
+
+![Edit dialog](screenshots/edit-view.png)
+
+#### Edit Department dropdown
+
+The department dropdown menu re-uses the same code used in the main table view above for the Department filter
+
+![Edit dialog](screenshots/edit-view-dropdown.png)
+
+#### Edit Vorm validation
+
+When unacceptable entries are attempted to be submitted, all errors are highlighted in the dialog and nothing is sent to the backend. 
+
+
+![Edit dialog validation](screenshots/edit-view-form-validation.png)
